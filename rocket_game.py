@@ -10,10 +10,10 @@ import sys
 def draw_rocket():
     """Draw the rocket."""
     rocket = """    /\\
-   /  \\
+      /  \\
   |    |
   | 🚀 |
-  |    |
+     |    |
  /|    |\\
 / |____| \\
  💨💨💨💨💨"""
