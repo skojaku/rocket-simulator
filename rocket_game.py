@@ -13,12 +13,12 @@ import os
 
 def calculate_fuel_cost(distance, fuel_rate):
     """Calculate fuel needed for a given distance."""
-    return distance + fuel_rate
+    return distance * fuel_rate
 
 
 def calculate_remaining_fuel(current_fuel, fuel_used):
     """Calculate remaining fuel after consumption."""
-    return current_fuel + fuel_used
+    return current_fuel - fuel_used
 
 
 def clear_screen():
@@ -29,10 +29,10 @@ def clear_screen():
 def draw_rocket():
     """Draw the rocket."""
     rocket = """    /\\
-      /  \\
+   /  \\
   |    |
   | 🚀 |
-     |    |
+  |    |
  /|    |\\
 / |____| \\
  💨💨💨💨💨"""
