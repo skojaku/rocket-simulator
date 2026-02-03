@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """
 Space Rocket Fuel Calculator Game
+
+A simple educational game to practice arithmetic operations.
+Watch your rocket launch and track fuel consumption!
 """
 
 import time
