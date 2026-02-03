@@ -1,13 +1,8 @@
 # 🚀 Rocket Simulator - Git Debugging Exercise
 
-## The Problem
+## The Mission
 
-Welcome, Space Engineer! This rocket fuel calculator has **TWO bugs** in the current version:
-
-1. **Bug #1**: The rocket ASCII art is misaligned
-2. **Bug #2**: The fuel calculations are completely wrong - fuel keeps increasing!
-
-Your mission: Use Git to find which commits introduced these bugs and fix them.
+Welcome, Space Engineer! Our rocket fuel calculator worked perfectly at one point, but now it has two critical bugs. The rocket looks misaligned when it launches, and somehow the fuel keeps increasing instead of decreasing. Your mission is to use Git as a time machine to find when these bugs were introduced and fix them.
 
 ## Getting Started
 
@@ -17,196 +12,131 @@ cd rocket-simulator
 python3 rocket_game.py
 ```
 
-**What you'll notice:**
-- The rocket looks weird/misaligned
-- Fuel starts at 100 units but **increases** to 140 instead of decreasing!
+You'll immediately see both problems: the rocket body doesn't line up correctly, and the fuel goes from 100 units up to 140 units. A rocket that gains fuel as it flies? That's not how physics works!
 
-## Your Mission
+---
 
-### Part 1: Fix the ASCII Art Bug
+## Part 1: Fix the Misaligned Rocket
 
-The rocket's body is misaligned in the current version.
+The rocket's ASCII art is broken. Some lines stick out too far to the right. Your goal is to travel back in Git history to find when the rocket looked correct, copy that working version, and bring it forward to fix the current code.
 
-**Tasks:**
-1. Look at the rocket when you run the game - see the problem?
-2. Use `git log --oneline` to see all commits
-3. Find which commit broke the ASCII art (Hint: look for "Update rocket design")
-4. Find the commit BEFORE the break where it was correct (Hint: "Add rocket ASCII art")
-5. **Time travel to the working version:**
+### Steps
+
+1. Use `git log --oneline` to view the commit history
+2. Find the commit that says "Update rocket design" (this broke it)
+3. Find the commit just before that: "Add rocket ASCII art" (this was correct)
+4. Time travel to the working version:
    ```bash
-   git checkout <commit-hash-before-break>
-   cat rocket_game.py  # Look at the draw_rocket() function
+   git checkout <commit-hash-of-working-version>
    ```
-6. **Copy the correct ASCII art** from the `draw_rocket()` function
-7. **Return to the present:**
+5. View the file and copy the correct `draw_rocket()` function:
+   ```bash
+   cat rocket_game.py
+   ```
+6. Return to the present:
    ```bash
    git checkout main
    ```
-8. Open `rocket_game.py` and **paste the correct ASCII art** into `draw_rocket()`
-9. Test that the rocket looks correct: `python3 rocket_game.py`
-10. Stage and commit your fix:
+7. Open `rocket_game.py` in your editor and paste the correct ASCII art
+8. Test it: `python3 rocket_game.py`
+9. Commit your fix:
+   ```bash
+   git add rocket_game.py
+   git commit -m "Fix rocket ASCII art alignment"
+   ```
+
+**What you're learning:** Git lets you checkout old commits to see exactly how the code looked in the past. This is like having a time machine for your codebase.
+
+---
+
+## Part 2: Fix the Fuel Calculations
+
+The math is completely wrong. The fuel calculation functions use addition when they should use multiplication and subtraction. You'll use Git to find when this happened and what the correct operators should be.
+
+### Steps
+
+1. Use `git log --oneline` to find the suspicious commit
+2. Look for "Refactor fuel calculation functions" (the word "refactor" often hides bugs!)
+3. See what changed in that commit:
+   ```bash
+   git show <commit-hash>
+   ```
+4. Time travel to the commit just before the break to see the correct code:
+   ```bash
+   git checkout <previous-commit-hash>
+   ```
+5. Look at the `calculate_fuel_cost()` and `calculate_remaining_fuel()` functions
+6. Note the correct operators: `*` for multiplication and `-` for subtraction
+7. Return to the present:
+   ```bash
+   git checkout main
+   ```
+8. Fix the two functions in `rocket_game.py` (around lines 14-21)
+9. Test it: `python3 rocket_game.py` (fuel should decrease from 100 to 70)
+10. Commit your fix:
     ```bash
     git add rocket_game.py
-    git commit -m "Fix rocket ASCII art alignment"
+    git commit -m "Fix fuel calculation operators"
     ```
 
-**This teaches you:** How to use Git as a time machine to recover correct code!
-
-### Part 2: Fix the Math Bug
-
-The fuel calculation functions are broken.
-
-**Tasks:**
-1. Find which commit broke the fuel calculations (Hint: "Refactor fuel...")
-2. Use `git show <commit-hash>` to see what changed
-3. Fix the two functions in `rocket_game.py`:
-   - `calculate_fuel_cost()` - Line 16 (should multiply, not add)
-   - `calculate_remaining_fuel()` - Line 21 (should subtract, not add)
-4. Test your fix - fuel should decrease from 100 to 70
-5. Commit your fix: `git commit -m "Fix fuel calculation operators"`
-
-## Expected Behavior
-
-When both bugs are fixed:
-- **Rocket:** Should be properly aligned
-- **Starting fuel:** 100 units
-- **Fuel rate:** 3 units per step
-- **Maximum altitude:** 10 steps
-- **Final fuel:** 100 - (10 × 3) = **70 units remaining**
+**What you're learning:** Seemingly innocent "refactoring" can introduce bugs. Git history helps you spot exactly what changed.
 
 ---
 
-## Git Cheatsheet
+## Expected Results
 
-### Viewing History
+When both bugs are fixed, your rocket should launch cleanly with aligned ASCII art, and the fuel should decrease from 100 units at the start down to 70 units after traveling 10 steps (using 3 units per step).
 
+---
+
+## Essential Git Commands
+
+Here are the key commands you'll use:
+
+**Viewing history:**
 ```bash
-# View all commits (most recent first)
-git log
-
-# View commits in one line each (easier to scan)
-git log --oneline
-
-# View commits with a visual graph
-git log --oneline --graph --all
-
-# View commits that changed a specific file
-git log --oneline rocket_game.py
+git log --oneline              # See all commits, one per line
+git show <commit-hash>         # See what changed in a specific commit
 ```
 
-### Inspecting Commits
-
+**Time travel:**
 ```bash
-# See what changed in a specific commit
-git show <commit-hash>
-git show 7fbc52c
-
-# See only the diff for a specific file
-git show <commit-hash> rocket_game.py
-
-# Compare two commits
-git diff <old-commit> <new-commit>
-git diff a8f01cb 7fbc52c
-
-# Compare a file between two commits
-git diff <old-commit> <new-commit> rocket_game.py
+git checkout <commit-hash>     # Go back to an old commit (read-only)
+git checkout main              # Return to the present
 ```
 
-### Finding Who Changed What
-
+**Making changes:**
 ```bash
-# See line-by-line history of a file
-git blame rocket_game.py
-
-# See blame for specific line range (e.g., the draw_rocket function)
-git blame -L 10,25 rocket_game.py
+git diff                       # See what you changed
+git add <file>                 # Stage your changes
+git commit -m "message"        # Commit your fix
 ```
 
-### Searching History
-
+**Advanced techniques:**
 ```bash
-# Find commits that mention "fuel"
-git log --grep="fuel"
-
-# Find commits where specific code was changed
-git log -S "distance * fuel_rate"
-
-# Find when a pattern was added or removed
-git log -G "distance.*fuel_rate"
-```
-
-### Time Travel to Old Commits
-
-```bash
-# Go back to an old commit (read-only mode)
-git checkout <commit-hash>
-
-# View a file at that old commit
-cat rocket_game.py
-less rocket_game.py
-
-# IMPORTANT: Return to the present (latest version)
-git checkout main
-
-# Alternative: View old file without leaving current commit
-git show <commit-hash>:rocket_game.py
-```
-
-### Comparing Current vs. Past
-
-```bash
-# See all changes since a specific commit
-git diff <commit-hash> HEAD
-
-# See what changed in just one file since a commit
-git diff <commit-hash> HEAD rocket_game.py
-
-# See changes in your working directory (not yet committed)
-git diff
-```
-
-### Useful Workflow Commands
-
-```bash
-# Check what you've changed
-git status
-git diff
-
-# Stage your changes
-git add rocket_game.py
-
-# Commit your fix
-git commit -m "Your commit message"
-
-# See your recent commits
-git log --oneline -5
+git log --grep="fuel"          # Find commits mentioning "fuel"
+git log -S "distance * fuel"   # Find when specific code changed
+git diff <old> <new>           # Compare two commits
+git blame <file>               # See who changed each line
 ```
 
 ---
 
-## Tips for Finding the Bugs
+## Tips
 
-1. **Start with `git log --oneline`** to get an overview of all changes
-2. **Look for suspicious commit messages** like "refactor" or "update design"
-3. **Use `git show <commit>`** to see exactly what each commit changed
-4. **ASCII art bug:** Was introduced early in history (commits 2-3)
-5. **Math bug:** Was introduced near the end (commit 7)
-6. **Compare with previous commits** using `git diff` to see what was working before
+When you use `git checkout <commit-hash>`, you'll see a message about "detached HEAD state." Don't worry! This just means you're in read-only mode, viewing an old version. You can look around, copy code, but you're not changing anything. Just use `git checkout main` to return to the present.
 
-## Learning Goals
+The ASCII art bug happened early in the history (commits 2-3), while the math bug was introduced much later (commit 7). Both were introduced by commits with innocent-sounding messages.
 
-- Navigate commit history with `git log`
-- Inspect specific commits with `git show`
-- Compare versions with `git diff`
-- Use `git blame` to track line-by-line changes
-- Understand how bugs can be introduced through seemingly innocent changes
-- Practice reading commit messages critically
-- Debug using Git as a time-travel tool
+---
 
-Good luck, Space Engineer! 🛠️
+## Need Help?
 
-**Stuck?** Check the `answer` branch for a complete solution:
+If you get stuck, check the `answer` branch for a complete step-by-step solution:
+
 ```bash
 git checkout answer
 cat ANSWER.md
 ```
+
+Good luck, Space Engineer! 🛠️
