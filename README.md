@@ -31,12 +31,26 @@ The rocket's body is misaligned in the current version.
 1. Look at the rocket when you run the game - see the problem?
 2. Use `git log --oneline` to see all commits
 3. Find which commit broke the ASCII art (Hint: look for "Update rocket design")
-4. Use `git show <commit-hash>` to see exactly what changed
-5. Fix the alignment in `draw_rocket()` function (lines 2 and 5 of the rocket art)
-6. Test that the rocket looks correct
-7. Commit your fix: `git commit -m "Fix rocket ASCII art alignment"`
+4. Find the commit BEFORE the break where it was correct (Hint: "Add rocket ASCII art")
+5. **Time travel to the working version:**
+   ```bash
+   git checkout <commit-hash-before-break>
+   cat rocket_game.py  # Look at the draw_rocket() function
+   ```
+6. **Copy the correct ASCII art** from the `draw_rocket()` function
+7. **Return to the present:**
+   ```bash
+   git checkout main
+   ```
+8. Open `rocket_game.py` and **paste the correct ASCII art** into `draw_rocket()`
+9. Test that the rocket looks correct: `python3 rocket_game.py`
+10. Stage and commit your fix:
+    ```bash
+    git add rocket_game.py
+    git commit -m "Fix rocket ASCII art alignment"
+    ```
 
-**Hint:** Compare with the previous commit to see what the correct spacing should be!
+**This teaches you:** How to use Git as a time machine to recover correct code!
 
 ### Part 2: Fix the Math Bug
 
@@ -119,6 +133,23 @@ git log -S "distance * fuel_rate"
 
 # Find when a pattern was added or removed
 git log -G "distance.*fuel_rate"
+```
+
+### Time Travel to Old Commits
+
+```bash
+# Go back to an old commit (read-only mode)
+git checkout <commit-hash>
+
+# View a file at that old commit
+cat rocket_game.py
+less rocket_game.py
+
+# IMPORTANT: Return to the present (latest version)
+git checkout main
+
+# Alternative: View old file without leaving current commit
+git show <commit-hash>:rocket_game.py
 ```
 
 ### Comparing Current vs. Past
